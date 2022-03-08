@@ -1,9 +1,11 @@
-const express = require("express");
+require('dotenv').config()
 
+const express = require("express");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const encrypt = require("mongoose-encryption");
 const app = express();
+
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -18,8 +20,8 @@ const userSchema = new mongoose.Schema({
 
 //use mongoose-encryption to encrypt the password field
 //It encrypts when save() is called, and decrypts when find() is called
-const secret = "Thisisourlittlesecret.";
-userSchema.plugin(encrypt, {secret: secret, encryptedFields: ["password"]});
+
+userSchema.plugin(encrypt, {secret: process.env.SECRET, encryptedFields: ["password"]});
 
 const User = new mongoose.model("User", userSchema);
 
